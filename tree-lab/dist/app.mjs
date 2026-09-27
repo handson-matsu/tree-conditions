@@ -20,3 +20,16 @@ function changeMode(value){mode=value;round=0;for(const id of ['free','challenge
 $('free').onclick=()=>changeMode('free');$('challenge').onclick=()=>changeMode('challenge');$('size').onchange=()=>{n=Number($('size').value);start();};$('show').onchange=render;$('reset').onclick=()=>{selected=null;layout();edges=initial.map(e=>[...e]);render();};$('next').onclick=()=>{round++;start();};
 start();
 if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'edit_graph_edges',description:'表示中のグラフの辺を追加または削除する。頂点番号は1から始まる。',inputSchema:{type:'object',properties:{action:{type:'string',enum:['add','remove']},vertices:{type:'array',items:{type:'integer'},minItems:2,maxItems:2}},required:['action','vertices'],additionalProperties:false},annotations:{readOnlyHint:false},execute(input){if(!input||!['add','remove'].includes(input.action)||!Array.isArray(input.vertices)||input.vertices.length!==2||input.vertices.some(v=>!Number.isInteger(v)||v<1||v>n)||input.vertices[0]===input.vertices[1])throw new Error('有効な異なる頂点番号を2つ指定してください。');const [a,b]=input.vertices.map(v=>v-1).sort((a,b)=>a-b);if(input.action==='remove')removeEdge(a,b);else{if(!edges.some(([u,v])=>u===a&&v===b))edges.push([a,b]);selected=null;render();}return {vertices:n,edges:edges.map(e=>e.map(v=>v+1))};}})).catch(()=>{});}catch{}}
+
+// Record one visit per page load without waiting for the response or retrying.
+try {
+  fetch('https://script.google.com/macros/s/AKfycbxssCIHsD-N97SHxNC_GN0ihYeC0qy-lb-EY0KmSs6Gnztaph1sITMerLVEnNWOGkYc/exec?app=tree-conditions', {
+    method: 'GET',
+    mode: 'no-cors',
+    cache: 'no-store',
+    credentials: 'omit',
+    keepalive: true,
+  }).catch(() => {});
+} catch {
+  // Access logging must never interrupt the app.
+}
