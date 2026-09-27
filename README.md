@@ -4,7 +4,15 @@
 
 ## 起動
 
-リポジトリのルートで `python3 -m http.server 4173 --directory tree-lab/dist` を実行し、http://localhost:4173 を開きます。
+リポジトリのルートで `python3 -m http.server 4173` を実行し、http://localhost:4173 を開きます。
+
+## GitHub Pages
+
+公開元は `main` ブランチの `/(root)` に設定します。ビルドは不要です。ルートの `index.html` が既存の `tree-lab/dist/` 内のCSSとJavaScriptを相対パスで読み込みます。`.nojekyll` により静的ファイルをそのまま配信します。
+
+公開URL: https://handson-matsu.github.io/tree-conditions/
+
+変更を `main` にコミット・プッシュすると、GitHub Pagesのデプロイ後に反映されます。画面のHTMLを変更する場合は、ルートの `index.html` と単独配信用の `tree-lab/dist/index.html` の両方を更新し、各入口のアセット参照パスは維持してください。
 
 ## 検証
 
@@ -26,7 +34,9 @@
 
 ## ファイル
 
-- `tree-lab/dist/index.html`: 画面
+- `index.html`: GitHub Pages用の入口
+- `.nojekyll`: Jekyll処理を無効化
+- `tree-lab/dist/index.html`: 単独配信用の画面
 - `tree-lab/dist/style.css`: レスポンシブデザイン
 - `tree-lab/dist/app.mjs`: 操作・表示
 - `tree-lab/dist/graph.mjs`: 数学的判定・問題生成
